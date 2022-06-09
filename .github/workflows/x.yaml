@@ -1,0 +1,26 @@
+name: create_custom_windows_image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  BUILD-CUSTOM-IMAGE:
+    runs-on: ubuntu-latest    
+    steps:
+    - name: CHECKOUT
+      uses: actions/checkout@v2
+  
+
+    - name: AZURE LOGIN 
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+
+
+    - name: BUILD-CUSTOM-VM-IMAGE      
+      uses: azure/build-vm-image@v0
+      with:        
+        resource-group-name: 'AIB-Images'
+        managed-identity: 'AIBUAI'
+        image-builder-template-name: ${{ GITHUB.WORKSPACE }}/templates/TestTemplate.json
+
